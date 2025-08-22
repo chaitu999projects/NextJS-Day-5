@@ -1,8 +1,13 @@
-import LaptopModel from '@/app/models/Laptop'
-import React from 'react'
+import { DBConnection } from '@/app/lib/config/db';
+import LaptopModel from '@/app/models/Laptop';
+import React from 'react';
 
-const getLaptops = async () => {
-  const allLaptopData = await LaptopModel.find({})
+const GetLaptops = async () => {
+  // connect to DB
+  await DBConnection();
+
+  // fetch data
+  const allLaptopData = await LaptopModel.find({});
 
   return (
     <div className="min-h-screen bg-gray-100 px-6 py-10">
@@ -14,9 +19,9 @@ const getLaptops = async () => {
         <p className="text-center text-gray-500">No laptops added yet.</p>
       ) : (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {allLaptopData.map((item, i) => (
+          {allLaptopData.map((item) => (
             <div
-              key={i}
+              key={item._id.toString()}
               className="bg-white shadow-lg rounded-xl p-6 border border-gray-200 hover:shadow-xl transition"
             >
               <h3 className="text-xl font-semibold text-indigo-600">
@@ -33,7 +38,7 @@ const getLaptops = async () => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default getLaptops
+export default GetLaptops;
